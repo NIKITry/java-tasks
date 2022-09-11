@@ -10,7 +10,11 @@ public class HomeworkTask {
      * Считаем, что функция определена на всем пространстве от a до b
      */
     public static double calcIntegral(double a, double b, ToDoubleFunction<Double> function, double delta) {
-        return 0;
+        double res = 0;
+        for (double point = a; point <= b; point += delta) {
+            res = res + delta * function.applyAsDouble(point);
+        }
+        return res;
     }
 
     /**
@@ -18,7 +22,24 @@ public class HomeworkTask {
      * выводим номер первой максимальной цифры (если их несколько)
      */
     public static byte maxNumber(long a) {
-        return 0;
+        if (a == 0) {
+            return 1;
+        }
+        if (a == Long.MIN_VALUE) {
+            return 1;
+        }
+        byte numLenght = (byte) (Math.log10(a) + 1);
+        byte posMax = 0;
+        byte curMax = 0;
+        byte compare;
+        for (byte i = 1; i <= numLenght; i++) {
+             compare = (byte) Math.abs(a / (long) Math.pow(10, numLenght - i) % 10);
+            if (curMax < compare) {
+                curMax = compare;
+                posMax = i;
+            }
+        }
+        return posMax;
     }
 
 
@@ -27,7 +48,7 @@ public class HomeworkTask {
      * которая находится на той же прямой что и первые две.
      */
     public static double lineFunction(int x1, int y1, int x2, int y2, int x3) {
-        return 0;
+        return (double) (-x1 * y2 + x2 * y1 - (y1 - y2) * x3) / (x2 - x1);
     }
 
     /**
@@ -36,7 +57,23 @@ public class HomeworkTask {
      * Это дополнительное задание, необязательное для выполнения
      */
     public static double square(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-        return 0;
-    }
+        // узнаем диагонали четырехугольника
+        double lengthAC = Math.sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
+        double lengthBD = Math.sqrt((x2 - x4) * (x2 - x4) + (y2 - y4) * (y2 - y4));
 
+        //проверяем, не совпали ли точки диагональные
+        if (lengthAC == 0 || lengthBD == 0) {
+            return 0;
+        }
+
+        // узнаем угол между диагоналями
+        double angle = ((x1 - x3) * (x2 - x4) + (y1 - y3) * (y2 - y4)) /
+                Math.sqrt(((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3)) *
+                        ((x2 - x4) * (x2 - x4) + (y2 - y4) * (y2 - y4)));
+        // преобразуем в синус
+        angle = Math.sqrt(1 - angle * angle);
+        // считаем площадь
+        double square = (lengthBD * lengthAC * angle) * 0.5;
+        return square;
+    }
 }
