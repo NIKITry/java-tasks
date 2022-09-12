@@ -7,7 +7,7 @@ package ru.mail.polis.homework.analyzer;
  * Ниже надо реализовать методы, которые создают фильтры заданного типа (то что они возвращают интерфейс, это как раз
  * прием ООП, где нам не важна конкретная реализация, а важен только контракт, что результат статических методов
  * умеет как-то анализировать текст). Сами статические методы мне нужны для создания тестов,
- * что бы без реальных классов (которые вы напишите) я смог "сэмулировать" их создание.
+ * чтобы без реальных классов (которые вы напишите) я смог "сэмулировать" их создание.
  *
  * Так же необходимо создать все необходимы методы, которые будут вам нужны для прогона текста
  * по всем фильтрам в классе TextFilterManager
@@ -15,23 +15,24 @@ package ru.mail.polis.homework.analyzer;
  * 2 тугрика + (2 тугрика за каждый фильтр + 1 тугрик за тест на свой фильтр) ИТОГО 11
  */
 public interface TextAnalyzer {
+    String[] negative = {"=(", ":(", ":|"};
+    String[] numbers = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     static TextAnalyzer createTooLongAnalyzer(long maxLength) {
-        return null;
+        return new Long(maxLength);
     }
 
     static TextAnalyzer createSpamAnalyzer(String[] spam) {
-        return null;
+        return new Spam(spam);
     }
 
     static TextAnalyzer createNegativeTextAnalyzer() {
-        return null;
+        return new Negative(negative);
     }
 
-    /**
-     * придумать свой фильтр
-     */
-    static <T> TextAnalyzer createCustomAnalyzer(T something) {
-        return null;
+    static TextAnalyzer createNumbersAnalyzer() {
+        return new Numbers(numbers);
     }
+
+    FilterType analyze(String text);
 }

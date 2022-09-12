@@ -1,7 +1,6 @@
 package ru.mail.polis.homework.analyzer;
 
 import org.junit.Test;
-
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -139,6 +138,12 @@ public class TextFilterManagerTest {
             assertTrue(Arrays.asList("NEGATIVE_TEXT", "TOO_LONG", "SPAM").contains(
                     manager.analyze("смс пожалуйста           =(").toString()));
         }
+    }
+    @Test
+    public void analyzeCustomFilters() {
+        TextFilterManager manager = new TextFilterManager(new TextAnalyzer[]{TextAnalyzer.createNumbersAnalyzer()});
+        assertEquals("CUSTOM", manager.analyze("вы выиграли 10000$").toString());
+
     }
 
 
